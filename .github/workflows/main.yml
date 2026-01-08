@@ -1,0 +1,23 @@
+name: Run UiPath Automation
+
+on:
+  workflow_dispatch:   # Manual trigger
+  push:
+    branches: [ "main" ]
+
+jobs:
+  run-uipath:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+
+    - name: Install UiPath CLI
+      run: |
+        Invoke-WebRequest https://www.uipath.com/downloads/cli -OutFile uipathcli.zip
+        Expand-Archive uipathcli.zip -DestinationPath uipathcli
+
+    - name: Run UiPath Workflow
+      run: |
+        uipathcli\uipath.exe run --file "Main.xaml"
